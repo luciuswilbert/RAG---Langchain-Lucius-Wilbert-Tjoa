@@ -44,7 +44,7 @@ def build_faiss_vectorstore(doc_path="docs/doc1.txt", save_path="faiss_index"):
     # Store in FAISS
     vectorstore = FAISS.from_texts(texts, embedding_model)
     vectorstore.save_local(save_path)
-    print(f"FAISS Index saved to `{save_path}`")
+    print(f"FAISS index saved to `{save_path}`")
 
 # Run 
 if __name__ == "__main__":
