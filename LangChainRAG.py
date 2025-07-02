@@ -1,23 +1,16 @@
-import os
-from typing import List
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-def load_documents_from_folder(folder_path: str) -> List[str]:
-    docs = []
-    for filename in os.listdir(folder_path):
-        if filename.endswith(".txt"):
-            with open(os.path.join(folder_path, filename), 'r', encoding='utf-8') as f:
-                docs.append(f.read())
-    return docs
+# STEP 1: Load your document
+with open("docs/doc1.txt", "r", encoding="utf-8") as f:
+    raw_text = f.read()
 
-# Load your doc(s)
-documents = load_documents_from_folder("docs/")
+# STEP 2: Split into chunks (for embedding)
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=50
+)
+documents = text_splitter.create_documents([raw_text])
 
-# Simple chunking (every 500 characters)
-chunks = []
+# Optional: Check your chunks
 for doc in documents:
-    chunks.extend([doc[i:i+500] for i in range(0, len(doc), 500)])
-
-# Show some output
-print(f"Loaded {len(documents)} document(s).")
-print(f"Created {len(chunks)} chunks.")
-print("Sample chunk:", chunks[0][:200], "...")
+    print(doc.page_content)
